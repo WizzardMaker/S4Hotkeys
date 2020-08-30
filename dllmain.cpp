@@ -35,17 +35,19 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 	return TRUE;
 }
 S4_OBJECT_TYPE SetBuilding(int vKey, S4_GUI_ENUM menu) {
-	//DWORD playerId;
-	//DWORD baseModuleAdress = (DWORD)GetModuleHandle(NULL);
-	//ReadProcessMemory(GetCurrentProcess(), (LPCVOID)(baseModuleAdress + 0x05975688+0xC), &playerId, sizeof(DWORD), NULL); //THANKS VICITEN!
+	DWORD playerIdAddrP,playerId;
 	
+	DWORD baseModuleAdress = (DWORD)GetModuleHandle(NULL);
+	ReadProcessMemory(GetCurrentProcess(), (LPCVOID)(baseModuleAdress + 0x010540c4), &playerIdAddrP, sizeof(DWORD), NULL); //THANKS VICITEN!
+	ReadProcessMemory(GetCurrentProcess(), (LPCVOID)(playerIdAddrP+0xc), &playerId, sizeof(DWORD), NULL); //THANKS VICITEN!
+
 	/*LPWSTR psz = NULL;
 	TCHAR buf[sizeof(playerId) * 8 + 1];
 	wsprintf(buf, TEXT("%d"), playerId);
 	psz = buf;
 	MessageBoxW(NULL, psz, L"Player race", MB_OK);*/
 
-	int playerId = 4;
+	//int playerId = 4;
 
 	switch (vKey)
 	{
