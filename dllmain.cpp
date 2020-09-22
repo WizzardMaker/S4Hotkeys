@@ -54,19 +54,7 @@ inline S4_OBJECT_TYPE DecideOnCurrentMenu(S4_GUI_ENUM menu,S4_OBJECT_TYPE found,
 }
 
 S4_OBJECT_TYPE SetBuilding(int vKey, S4_GUI_ENUM menu) {
-	DWORD playerIdAddrP,playerId;
-	
-	DWORD baseModuleAdress = (DWORD)GetModuleHandle(NULL);
-	ReadProcessMemory(GetCurrentProcess(), (LPCVOID)(baseModuleAdress + 0x010540c4), &playerIdAddrP, sizeof(DWORD), NULL); //THANKS VICITEN!
-	ReadProcessMemory(GetCurrentProcess(), (LPCVOID)(playerIdAddrP+0xc), &playerId, sizeof(DWORD), NULL); //THANKS VICITEN!
-
-	/*LPWSTR psz = NULL;
-	TCHAR buf[sizeof(playerId) * 8 + 1];
-	wsprintf(buf, TEXT("%d"), playerId);
-	psz = buf;
-	MessageBoxW(NULL, psz, L"Player race", MB_OK);*/
-
-	//int playerId = 4;
+	S4_OBJECT_TYPE playerId = s4->GetPlayerTribe();
 
 	switch (vKey)
 	{
@@ -129,13 +117,13 @@ S4_OBJECT_TYPE SetBuilding(int vKey, S4_GUI_ENUM menu) {
 	case('O'):
 		if(menu == S4_MENU_BUILDINGS_FOOD){
 			switch (playerId) {
-			case(0): //romans
+			case(S4_OBJECT_TYPE::S4_OBJECT_TRIBE_ROMAN): //romans
 				return S4_OBJECT_TYPE::S4_OBJECT_BUILDING_VINYARD;
-			case(1): //wikings
+			case(S4_OBJECT_TRIBE_VIKING): //wikings
 				return S4_OBJECT_TYPE::S4_OBJECT_BUILDING_BEEKEEPERHUT;
-			case(2): //maya
+			case(S4_OBJECT_TRIBE_MAYA): //maya
 				return S4_OBJECT_TYPE::S4_OBJECT_BUILDING_AGAVEFARMERHUT;
-			case(4): //trojan
+			case(S4_OBJECT_TRIBE_TROJAN): //trojan
 				return S4_OBJECT_TYPE::S4_OBJECT_BUILDING_SUNFLOWERFARMERHUT;
 			}
 		}
@@ -143,13 +131,13 @@ S4_OBJECT_TYPE SetBuilding(int vKey, S4_GUI_ENUM menu) {
 	case('L'):
 		if (menu == S4_MENU_BUILDINGS_FOOD){
 			switch (playerId) {
-			case(0): //romans
+			case(S4_OBJECT_TYPE::S4_OBJECT_TRIBE_ROMAN): //romans
 				break;//return S4_OBJECT_TYPE::S4_OBJECT_BUILDING_WIN;
-			case(1): //wikings
+			case(S4_OBJECT_TRIBE_VIKING): //wikings
 				return S4_OBJECT_TYPE::S4_OBJECT_BUILDING_MEADMAKERHUT;
-			case(2): //maya
+			case(S4_OBJECT_TRIBE_MAYA): //maya
 				return S4_OBJECT_TYPE::S4_OBJECT_BUILDING_TEQUILAMAKERHUT;
-			case(4): //trojan
+			case(S4_OBJECT_TRIBE_TROJAN): //trojan
 				return S4_OBJECT_TYPE::S4_OBJECT_BUILDING_SUNFLOWEROILMAKERHUT;
 			}
 		}
@@ -199,17 +187,10 @@ bool StartBuildMode(DWORD currentTick) {
 
 
 HRESULT S4HCALL S4TickProc(DWORD dwTick, BOOL bHasEvent, BOOL bIsDelayed) {
-	if (bIsDelayed) return FALSE; // someone is already requesting to create an event
+	if (bIsDelayed) return FALSE;
 
-	//if (GetAsyncKeyState('Q')) { // check if the condition for creating an event is met
-			// append \splash.bmp to the filename of the module
-	
-
-	return StartBuildMode(dwTick); // e.g. destroying a building or commanding units
-	//}
-
-
-	//return FALSE; // we do not intend to create an event for this tick
+	StartBuildMode(dwTick);
+	return FALSE;
 }
 
 
