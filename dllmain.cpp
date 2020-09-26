@@ -56,6 +56,28 @@ inline S4_OBJECT_TYPE DecideOnCurrentMenu(S4_GUI_ENUM menu,S4_OBJECT_TYPE found,
 S4_OBJECT_TYPE SetBuilding(int vKey, S4_GUI_ENUM menu) {
 	S4_OBJECT_TYPE playerId = s4->GetPlayerTribe();
 
+	if (playerId == S4_OBJECT_TRIBE_DARK) {
+		switch (vKey)
+		{
+		case('U'):
+			return DecideOnCurrentMenu(menu,
+				S4_OBJECT_BUILDING_WOODCUTTERHUT,
+				S4_OBJECT_EMPTY,
+				S4_OBJECT_EMPTY,
+				S4_OBJECT_EMPTY,
+				S4_OBJECT_BUILDING_BARRACKS);
+		case('I'):
+			return DecideOnCurrentMenu(menu,
+				S4_OBJECT_BUILDING_STONECUTTERHUT,
+				S4_OBJECT_EMPTY,
+				S4_OBJECT_EMPTY,
+				S4_OBJECT_EMPTY,
+				S4_OBJECT_EMPTY);
+		}
+		
+		return S4_OBJECT_EMPTY;
+	}
+
 	switch (vKey)
 	{
 	case('U'):
